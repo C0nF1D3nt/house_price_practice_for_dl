@@ -13,11 +13,14 @@ test_data = pd.read_csv('../data/test.csv')
 
 # 数据预处理
 all_features = pd.concat((train_data.iloc[:, 1: -1], test_data.iloc[:, 1:]))
+# 数字类型的数据进行标准化
 numeric_idx = [col for col in all_features.dtypes[all_features.dtypes != 'object'].index]
 all_features[numeric_idx] = all_features[numeric_idx].apply(
     lambda x: ((x - x.mean()) / x.std())
 )
+# 填充NA数据
 all_features[numeric_idx] = all_features[numeric_idx].fillna(0)
+# 将非数字数据改为one-hot向量格式
 all_features = pd.get_dummies(all_features, dummy_na=True)
 # print(all_features.shape)
 
@@ -47,6 +50,7 @@ net = nn.Sequential(
 loss = nn.MSELoss()
 optimizer = torch.optim.Adam(net.parameters(), lr=lr, weight_decay=weight_decay)
 
+# 房价预测更看重相对误差，log_rmse比mse更方便衡量相对误差
 def log_rmse(net, train_features, train_labels):
     preds = net(train_features).reshape(train_labels.shape)
     preds = torch.clamp(preds, 1, float('inf'))
