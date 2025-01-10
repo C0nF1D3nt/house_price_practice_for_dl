@@ -5,8 +5,8 @@ import torchvision
 from torch.utils import data
 
 # 读取数据
-train_data = pd.read_csv('train.csv')
-test_data = pd.read_csv('test.csv')
+train_data = pd.read_csv('../data/train.csv')
+test_data = pd.read_csv('../data/test.csv')
 
 # print(train_data.shape)
 # print(test_data.shape)
@@ -64,5 +64,5 @@ for epoch in range(num_epochs):
 preds = net(test_features).detach().numpy()
 test_data['SalePrice'] = pd.Series(preds.reshape(1, -1)[0])
 result = pd.concat((test_data['Id'], test_data['SalePrice']), axis=1)
-result.to_csv('result.csv', index=False)
+result.to_csv('../result/result.csv', index=False)
 
