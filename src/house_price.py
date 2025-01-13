@@ -19,6 +19,7 @@ all_features[numeric_idx] = all_features[numeric_idx].apply(
     lambda x: ((x - x.mean()) / x.std())
 )
 # 填充NA数据
+# 前面标准化将均值调整为0，此时填充NA为0值不会改变数据分布
 all_features[numeric_idx] = all_features[numeric_idx].fillna(0)
 # 将非数字数据改为one-hot向量格式
 all_features = pd.get_dummies(all_features, dummy_na=True)
