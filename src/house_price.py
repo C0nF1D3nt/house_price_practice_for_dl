@@ -51,6 +51,7 @@ loss = nn.MSELoss()
 optimizer = torch.optim.Adam(net.parameters(), lr=lr, weight_decay=weight_decay)
 
 # 房价预测更看重相对误差，log_rmse比mse更方便衡量相对误差
+# log_rmse用于观测误差，便于调整模型参数，实际反向传播仍然使用MSE
 def log_rmse(net, train_features, train_labels):
     preds = net(train_features).reshape(train_labels.shape)
     preds = torch.clamp(preds, 1, float('inf'))
